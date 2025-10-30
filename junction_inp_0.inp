@@ -1,0 +1,190 @@
+[TITLE]
+;;Project Title/Notes
+
+[OPTIONS]
+;;Option             Value
+FLOW_UNITS           LPS
+INFILTRATION         HORTON
+FLOW_ROUTING         DYNWAVE
+LINK_OFFSETS         ELEVATION
+MIN_SLOPE            0
+ALLOW_PONDING        NO
+SKIP_STEADY_STATE    NO
+
+START_DATE           10/22/2021
+START_TIME           23:55:00
+REPORT_START_DATE    10/22/2021
+REPORT_START_TIME    23:55:00
+END_DATE             10/23/2021
+END_TIME             00:05:00
+SWEEP_START          01/01
+SWEEP_END            12/31
+DRY_DAYS             0
+REPORT_STEP          00:00:01
+WET_STEP             00:00:01
+DRY_STEP             00:00:01
+ROUTING_STEP         0.005
+RULE_STEP            00:00:00
+
+INERTIAL_DAMPING     NONE
+NORMAL_FLOW_LIMITED  BOTH
+FORCE_MAIN_EQUATION  H-W
+SURCHARGE_METHOD     SLOT
+VARIABLE_STEP        0.00
+LENGTHENING_STEP     0.001
+MIN_SURFAREA         0.00001
+MAX_TRIALS           8
+HEAD_TOLERANCE       0.000015
+SYS_FLOW_TOL         5
+LAT_FLOW_TOL         5
+MINIMUM_STEP         0.001
+THREADS              4
+
+[EVAPORATION]
+;;Data Source    Parameters
+;;-------------- ----------------
+CONSTANT         0.0
+DRY_ONLY         NO
+
+[JUNCTIONS]
+;;Name           Elevation  MaxDepth   InitDepth  SurDepth   Aponded   
+;;-------------- ---------- ---------- ---------- ---------- ----------
+SP_L             0.09       1          0          0          0         
+T_J              0.08       1          0          0          0         
+SP_U             0.09       1          0          0          0         
+EndAcrylic       0.04       1          0          0          0         
+KG               0          1          0          0          0         
+U_Weir_outlet    .12        1          0          0          0         
+L_Weir_outlet    0.13       1          0          0          0         
+Q_U              0          1          0          0          0         
+Q_L              0          1          0          0          0         
+
+[OUTFALLS]
+;;Name           Elevation  Type       Stage Data       Gated    Route To        
+;;-------------- ---------- ---------- ---------------- -------- ----------------
+Downstream       0          FREE                        NO                       
+
+[CONDUITS]
+;;Name           From Node        To Node          Length     Roughness  InOffset   OutOffset  InitFlow   MaxFlow   
+;;-------------- ---------------- ---------------- ---------- ---------- ---------- ---------- ---------- ----------
+L_PVC            L_Weir_outlet    SP_L             4.42       0.009      0          0          0          0         
+L_PC             SP_L             T_J              1          0.009      0          0          0          0         
+U_PC             SP_U             T_J              1          0.009      0          0          0          0         
+D_PC             T_J              EndAcrylic       1          0.009      0          0          0          0         
+After_KG         KG               Downstream       0.2        0.009      0          0          0          0         
+U_PVC            U_Weir_outlet    SP_U             4.53       0.009      0          0          0          0         
+U_Weir           Q_U              U_Weir_outlet    10         0.009      *          *          0          0         
+L_Weir           Q_L              L_Weir_outlet    10         0.009      *          *          0          0         
+D_PVC            EndAcrylic       KG               0.94       0.009      *          *          0          0         
+
+[XSECTIONS]
+;;Link           Shape        Geom1            Geom2      Geom3      Geom4      Barrels    Culvert   
+;;-------------- ------------ ---------------- ---------- ---------- ---------- ---------- ----------
+L_PVC            CIRCULAR     0.098            0          0          0          1                    
+L_PC             CIRCULAR     0.095            0          0          0          1                    
+U_PC             CIRCULAR     0.095            0          0          0          1                    
+D_PC             CIRCULAR     0.095            0          0          0          1                    
+After_KG         CIRCULAR     0.095            0          0          0          1                    
+U_PVC            CIRCULAR     0.098            0          0          0          1                    
+U_Weir           CIRCULAR     0.098            0          0          0          1                    
+L_Weir           CIRCULAR     0.098            0          0          0          1                    
+D_PVC            CIRCULAR     0.098            0          0          0          1                    
+
+[LOSSES]
+;;Link           Kentry     Kexit      Kavg       Flap Gate  Seepage   
+;;-------------- ---------- ---------- ---------- ---------- ----------
+L_PC             0          1          0          NO         0         
+U_PC             0          1          0          NO         0         
+D_PC             1          0          0          NO         0         
+
+[CONTROLS]
+RULE 1
+IF SIMULATION DATE >= 10/23/2021
+THEN CONDUIT After_KG STATUS = OPEN
+ELSE CONDUIT After_KG STATUS = OPEN
+
+
+
+
+
+
+
+
+
+
+[INFLOWS]
+;;Node           Constituent      Time Series      Type     Mfactor  Sfactor  Baseline Pattern
+;;-------------- ---------------- ---------------- -------- -------- -------- -------- --------
+Q_U              FLOW             Q*U              FLOW     1.0      1.0              
+Q_L              FLOW             Q*L              FLOW     1.0      1.0              
+
+[CURVES]
+;;Name           Type       X-Value    Y-Value   
+;;-------------- ---------- ---------- ----------
+Storage_Unit     Storage    0          0.04      
+Storage_Unit                .5         0.04      
+Storage_Unit                1          0.04      
+
+[TIMESERIES]
+;;Name           Date       Time       Value     
+;;-------------- ---------- ---------- ----------
+Q*U                         00:01      0.37      
+Q*U                         00:02      0.37      
+Q*U                         00:03      0.37      
+Q*U                         00:04      0.37      
+Q*U                         00:05      0.37      
+Q*U                         05:00      0.37      
+;
+Q*L                         00:01      0.37      
+Q*L                         00:02      0.37      
+Q*L                         00:03      0.37      
+Q*L                         00:04      0.37      
+Q*L                         00:05      0.37      
+Q*L                         00:06      0.37      
+Q*L                         00:07      0.37      
+Q*L                         00:08      0.37      
+Q*L                         00:09      0.37      
+Q*L                         00:10      0.37      
+Q*L                         00:11      0.37      
+Q*L                         05:00      0.37      
+
+[REPORT]
+;;Reporting Options
+SUBCATCHMENTS ALL
+NODES ALL
+LINKS ALL
+
+[TAGS]
+
+[MAP]
+DIMENSIONS -2561.101 0.000 10426.850 10000.000
+Units      None
+
+[COORDINATES]
+;;Node           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+SP_L             4380.379           5421.687          
+T_J              4380.379           4199.656          
+SP_U             5808.950           4199.656          
+EndAcrylic       2297.762           4199.656          
+KG               731.497            4199.656          
+U_Weir_outlet    9836.489           4199.656          
+L_Weir_outlet    4380.379           8760.757          
+Q_U              9836.489           5851.979          
+Q_L              7237.522           8760.757          
+Downstream       -1970.740          4199.656          
+
+[VERTICES]
+;;Link           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+
+[Polygons]
+
+[PROFILES]
+;;Name           Links     
+;;-------------- ----------
+"Upstream - main - downstream" Hyd_Weir_M U_PVC U_PC D_PC KG
+"Upstream - main - downstream" After_KG
+"Main            " 1 8 U_PC D_PC KG
+"Main            " After_KG U_Weir U_PVC U_PC D_PC
+"Main            " D_PVC After_KG
