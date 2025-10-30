@@ -9,7 +9,7 @@ from numpy import average, matrix
 
 
 # Read base file to change parameters
-with open("junction_inp_0.inp",'r') as f:
+with open("LID_inp_0.inp",'r') as f:
     get_all=f.readlines()
 
 dk = 0.1 # intervalo de valores do coef. de perda local
@@ -25,9 +25,9 @@ for i in range(nk):
             kDw = k*dk
             cont = cont + 1
             print(cont, kLat,kDw,kUp)
-            shutil.copy("junction_inp_0.inp", os.path.join(f"junction_inp_{cont}.inp"))
-            shutil.copy("junction_ini_0.ini", os.path.join(f"junction_ini_{cont}.ini"))
-            file_name = f"junction_inp_{cont}.inp"
+            shutil.copy("LID_inp_0.inp", os.path.join(f"LID_inp_{cont}.inp"))
+            shutil.copy("LID_ini_0.ini", os.path.join(f"LID_ini_{cont}.ini"))
+            file_name = f"LID_inp_{cont}.inp"
             print(file_name)
             with open('K_value.txt','a') as res:
                 out_arr = numpy.hstack((kUp,kLat,kDw)) 
